@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-movesense",
+  "version": "0.0.1",
+  "description": "Cordova Plugin for connecting with Movesense devices and reading sensor values",
+  "cordova": {
+    "id": "com.prevayl.cordova-plugin-movesense",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reiss-Cashmore/cordova-plugin-movesense.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Reiss-Cashmore/cordova-plugin-movesense/issues"
+  },
+  "homepage": "https://github.com/Reiss-Cashmore/cordova-plugin-movesense#readme"
+}
