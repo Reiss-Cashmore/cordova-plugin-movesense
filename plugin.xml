@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.prevayl.CordovaPluginMovesense" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>CordovaPluginMovesense</name>
+    <js-module name="CordovaPluginMovesense" src="www/CordovaPluginMovesense.js">
+        <clobbers target="cordova.plugins.CordovaPluginMovesense" />
+    </js-module>
+    <dependency id="cordova-plugin-device" version="^2.0.0"/>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="CordovaPluginMovesense">
+                <param name="android-package" value="com.prevayl.CordovaPluginMovesense.CordovaPluginMovesense" />
+            </feature>
+        </config-file>
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <lib-file src="src/android/mdslib-release.aar"/>
+        <config-file parent="/*" target="AndroidManifest.xml"></config-file>
+        <source-file src="src/android/CordovaPluginMovesense.java"
+            target-dir="src/com/prevayl/CordovaPluginMovesense/CordovaPluginMovesense" />
+    </platform>
+</plugin>
