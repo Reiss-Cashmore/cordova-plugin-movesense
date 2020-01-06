@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.Manifest;
 import android.app.Activity;
+import android.util.Log;
 import com.movesense.mds.Logger;
 import com.movesense.mds.Mds;
 import com.movesense.mds.MdsConnectionListener;
@@ -29,12 +30,13 @@ import org.apache.cordova.PluginResult;
 /**
  * This class echoes a string called from JavaScript.
  */
+
 public class CordovaPluginMovesense extends CordovaPlugin {
     private CallbackContext PUBLIC_CALLBACKS = null;
     private Mds mds;
     private Map < String, MdsSubscription > subscriptionMap;
     private Context appContext;
-
+    private Boolean singleton = false;
     public CordovaPluginMovesense() {
 
         //     subscriptionMap = new HashMap < > ();
@@ -42,8 +44,14 @@ public class CordovaPluginMovesense extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-
+        
         Activity activity = cordova.getActivity();
+        if(!singleton){
+            appContext = this.cordova.getContext();
+            mds = Mds.builder().build(appContext);
+            singleton = true;
+        }
+
         if (action.equals("connect")) {
             final String address = args.getJSONObject(0).getString("address");
             if (address != null && address.length() > 0) {
@@ -53,6 +61,9 @@ public class CordovaPluginMovesense extends CordovaPlugin {
             }
 
             return true;
+        }
+        else if (action.equals("setHandlers")){
+            
         }
         else if (action.equals("subscribe")) {
             final String uri = args.getJSONObject(0).getString("uri");
@@ -70,16 +81,15 @@ public class CordovaPluginMovesense extends CordovaPlugin {
     }
 
     private void connect(String address, CallbackContext callbackContext) {
-        appContext = this.cordova.getContext();
-        mds = Mds.builder().build(appContext);
+
         mds.connect(address, new MdsConnectionListener() {
             @Override
             public void onConnect(String s) {
-                callbackContext.success(address);
+                
             }
             @Override
             public void onConnectionComplete(String s, String s1) {
-                callbackContext.success(address);
+                callbackContext.success(s1);
             }
             @Override
             public void onError(MdsException e) {
@@ -93,9 +103,12 @@ public class CordovaPluginMovesense extends CordovaPlugin {
     }
 
     public void subscribe(@NonNull String uri, String contract, final String key, CallbackContext callbackContext) {
+        Log.i("Suunto Subscribe Notification", "Subbed");
         MdsSubscription subscription = mds.subscribe(uri, contract, new MdsNotificationListener() {
             @Override
             public void onNotification(String s) {
+                Log.i("Suunto Subscribe Notification", s);
+                System.out.println(s);
                 PluginResult subscribeNotification = new PluginResult(PluginResult.Status.OK, s);
                 subscribeNotification.setKeepCallback(true);
                 callbackContext.sendPluginResult(subscribeNotification);
@@ -103,7 +116,9 @@ public class CordovaPluginMovesense extends CordovaPlugin {
 
             @Override
             public void onError(MdsException e) {
+                Log.i("Suunto Subscribe Notification", e.toString());
                 // sendNotificationErrorEvent(key, e.getMessage());
+
             }
         });
         // subscriptionMap.put(key, subscription);
