@@ -115,12 +115,9 @@ class Movesense {
                 contract: JSON.stringify(contract),
                 key: subsKeyStr
             }])
-
         } else {
-            exec(onResponse, onError, 'CordovaPluginMovesense', 'subscribe', [this.URI_PREFIX + serial + uri, JSON.stringify(contract), subsKeyStr])
-
+            exec(onResponse, onError, 'CordovaPluginMovesense', 'subscribe', [{uri:this.URI_PREFIX + serial + uri, contract:JSON.stringify(contract), key:subsKeyStr}])
         }
-
         return this.subsKey;
     }
 
