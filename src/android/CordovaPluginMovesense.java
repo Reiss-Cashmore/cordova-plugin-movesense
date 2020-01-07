@@ -37,6 +37,7 @@ public class CordovaPluginMovesense extends CordovaPlugin {
     private Map < String, MdsSubscription > subscriptionMap;
     private Context appContext;
     private Boolean singleton = false;
+    MdsSubscription subscription;
     public CordovaPluginMovesense() {
 
         //     subscriptionMap = new HashMap < > ();
@@ -85,7 +86,7 @@ public class CordovaPluginMovesense extends CordovaPlugin {
         mds.connect(address, new MdsConnectionListener() {
             @Override
             public void onConnect(String s) {
-                
+
             }
             @Override
             public void onConnectionComplete(String s, String s1) {
@@ -104,7 +105,7 @@ public class CordovaPluginMovesense extends CordovaPlugin {
 
     public void subscribe(@NonNull String uri, String contract, final String key, CallbackContext callbackContext) {
         Log.i("Suunto Subscribe Notification", "Subbed");
-        MdsSubscription subscription = mds.subscribe(uri, contract, new MdsNotificationListener() {
+        subscription = mds.subscribe(uri, contract, new MdsNotificationListener() {
             @Override
             public void onNotification(String s) {
                 Log.i("Suunto Subscribe Notification", s);
